@@ -177,6 +177,11 @@ public class PullRefreshLayout extends ViewGroup {
             return false;
         }
 
+        if(mRefreshing){
+            setRefreshing(false);
+            return true;
+        }
+
         final int action = MotionEventCompat.getActionMasked(ev);
 
         switch (action) {
