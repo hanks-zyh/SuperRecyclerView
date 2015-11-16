@@ -18,6 +18,8 @@ import android.view.animation.Transformation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
+import com.hanks.library.R;
+
 import java.security.InvalidParameterException;
 
 /**
@@ -66,7 +68,7 @@ public class PullRefreshLayout extends ViewGroup {
     public PullRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.refresh_PullRefreshLayout);
-        final int type = a.getInteger(R.styleable.refresh_PullRefreshLayout_refreshType, STYLE_MATERIAL);
+        final int type = a.getInteger(R.styleable.refresh_PullRefreshLayout_refreshType, STYLE_SMARTISAN);
         final int colorsId = a.getResourceId(R.styleable.refresh_PullRefreshLayout_refreshColors, 0);
         final int colorId = a.getResourceId(R.styleable.refresh_PullRefreshLayout_refreshColor, 0);
         a.recycle();
