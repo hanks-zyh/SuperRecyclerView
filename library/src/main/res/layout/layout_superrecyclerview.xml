@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <com.hanks.library.pullrefresh.PullRefreshLayout
+        android:id="@+id/pull_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:fadingEdge="none"
+            android:fadingEdgeLength="0px"
+            android:footerDividersEnabled="false"
+            android:overScrollMode="never"
+            android:paddingBottom="16dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical">
+        </android.support.v7.widget.RecyclerView>
+    </com.hanks.library.pullrefresh.PullRefreshLayout>
+
+</merge>
+
