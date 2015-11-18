@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,14 @@ public class MainActivity extends AppCompatActivity {
             @Override public void onRefresh() {
                 new MyTask().execute();
             }
+
+            @Override public void onLoadingMore() {
+                Log.v("tag", "onLoadingMore");
+            }
         });
+
+        View headerView = View.inflate(this,R.layout.item_simple_text,null);
+        superRecyclerView.setHeaderView(headerView);
     }
 
     class MyTask extends AsyncTask<Void, Void, Void> {

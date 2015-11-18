@@ -6,4 +6,5 @@ package com.hanks.library;
 public interface SuperListener {
 
     void onRefresh();
+    void onLoadingMore();
 }
