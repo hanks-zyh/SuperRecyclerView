@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/view_empty"
+        layout="@layout/layout_empty"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/view_error"
+        layout="@layout/layout_error_page"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/view_loading"
+        layout="@layout/layout_loading"
+        android:visibility="gone"/>
+
+</merge>
