@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.hanks.library.WrapperAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,37 +31,61 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         superRecyclerView = (SuperRecyclerView) findViewById(R.id.super_recyclerview);
+
+        // wrapperAdapter for your adapter
         mAdapter = new WrapperAdapter(new MyAdapter(), LoadingListItemCreator.DEFAULT);
         superRecyclerView.setAdapter(mAdapter);
 
         superRecyclerView.setListener(new SuperListener() {
             @Override public void onRefresh() {
-                new JustSleepTask().execute();
+                new GetDataTask().execute(GetDataTask.TASK_TYPE_CLEAR);
             }
 
             @Override public void onLoadingMore() {
-                Log.v("tag", "onLoadingMore");
-                addData();
-                new JustSleepTask().execute();
+                new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
+            }
+
+            @Override public void onReadLoad(View view) {
+                new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
             }
         });
-
-        addData();
-
+        new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
     }
 
-    private void addData() {// add data
-        int startIndex = dataList.size();
-        for (int i = startIndex; i < startIndex + 15; i++) {
-            dataList.add("this is a simple item: " + i);
+    private void updateUI() {
+        superRecyclerView.stopRefresh();
+        mAdapter.notifyDataSetChanged();
+        if (dataList.size() <= 0) {
+            int random = new Random().nextInt(100);
+            if (random > 50) {
+                superRecyclerView.showErrorView();
+            }else {
+                superRecyclerView.showEmptyView();
+            }
+        } else {
+            superRecyclerView.hideAttachView();
         }
+
+
+
     }
 
-    class JustSleepTask extends AsyncTask<Void, Void, Void> {
+    class GetDataTask extends AsyncTask<Integer, Void, Void> {
 
-        @Override protected Void doInBackground(Void... params) {
+        public static final int TASK_TYPE_ADD   = 0x10;   // add data
+        public static final int TASK_TYPE_CLEAR = 0x11; // clear data
+
+        @Override protected Void doInBackground(Integer... params) {
             try {
-                Thread.sleep(5000);
+                if (params[0] == TASK_TYPE_ADD) {
+                    int startIndex = dataList.size();
+                    for (int i = startIndex; i < startIndex + 15; i++) {
+                        dataList.add("this is a simple item: " + i);
+                    }
+                } else if (params[0] == TASK_TYPE_CLEAR) {
+                    dataList.clear();
+                }
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -70,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            superRecyclerView.stopRefresh();
-            mAdapter.notifyDataSetChanged();
+            updateUI();
         }
     }
 

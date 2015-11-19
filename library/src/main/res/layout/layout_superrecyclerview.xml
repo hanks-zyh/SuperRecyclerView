@@ -8,21 +8,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/listView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:fadingEdge="none"
-            android:fadingEdgeLength="0px"
-            android:footerDividersEnabled="false"
-            android:overScrollMode="never"
-            android:paddingBottom="16dp"
-            android:scrollbarStyle="outsideOverlay"
-            android:scrollbars="vertical">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:fadingEdge="none"
+                android:fadingEdgeLength="0px"
+                android:footerDividersEnabled="false"
+                android:overScrollMode="never"
+                android:paddingBottom="16dp"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"/>
+            <com.hanks.library.AttachView
+                android:id="@+id/view_attach"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
     </com.hanks.library.pullrefresh.PullRefreshLayout>
+
 
 </merge>
 
