@@ -189,8 +189,4 @@ public class SuperRecyclerView extends FrameLayout {
         this.listener = listener;
     }
 
-    public void setHeaderView(View headerView){
-        mHeaderView  = headerView;
-        mRecyclerView.addItemDecoration(new HeaderDecoration(headerView));
-    }
 }

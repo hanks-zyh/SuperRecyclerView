@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hanks.library.LoadingListItemCreator;
 import com.hanks.library.SuperListener;
 import com.hanks.library.SuperRecyclerView;
+import com.hanks.library.WrapperAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,34 +24,40 @@ public class MainActivity extends AppCompatActivity {
     private SuperRecyclerView superRecyclerView;
 
     private List<String> dataList = new ArrayList<>();
+    private WrapperAdapter mAdapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // add data
-        for (int i = 0; i < 30; i++) {
-            dataList.add("this is a simple item: " + i);
-        }
-
         superRecyclerView = (SuperRecyclerView) findViewById(R.id.super_recyclerview);
-        superRecyclerView.setAdapter(new MyAdapter());
+        mAdapter = new WrapperAdapter(new MyAdapter(), LoadingListItemCreator.DEFAULT);
+        superRecyclerView.setAdapter(mAdapter);
 
         superRecyclerView.setListener(new SuperListener() {
             @Override public void onRefresh() {
-                new MyTask().execute();
+                new JustSleepTask().execute();
             }
 
             @Override public void onLoadingMore() {
                 Log.v("tag", "onLoadingMore");
+                addData();
+                new JustSleepTask().execute();
             }
         });
 
-        View headerView = View.inflate(this,R.layout.item_simple_text,null);
-        superRecyclerView.setHeaderView(headerView);
+        addData();
+
     }
 
-    class MyTask extends AsyncTask<Void, Void, Void> {
+    private void addData() {// add data
+        int startIndex = dataList.size();
+        for (int i = startIndex; i < startIndex + 15; i++) {
+            dataList.add("this is a simple item: " + i);
+        }
+    }
+
+    class JustSleepTask extends AsyncTask<Void, Void, Void> {
 
         @Override protected Void doInBackground(Void... params) {
             try {
@@ -63,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         @Override protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             superRecyclerView.stopRefresh();
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -92,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
             tv = (TextView) itemView.findViewById(R.id.tv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    Toast.makeText(itemView.getContext(),dataList.get(getAdapterPosition()),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(itemView.getContext(), dataList.get(getAdapterPosition()), Toast.LENGTH_SHORT)
+                            .show();
                 }
             });
         }
