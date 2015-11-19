@@ -62,12 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 superRecyclerView.showEmptyView();
             }
-        } else {
-            superRecyclerView.hideAttachView();
         }
-
-
-
     }
 
     class GetDataTask extends AsyncTask<Integer, Void, Void> {

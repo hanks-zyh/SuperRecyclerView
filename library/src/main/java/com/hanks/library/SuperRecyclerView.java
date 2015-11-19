@@ -144,7 +144,10 @@ public class SuperRecyclerView extends FrameLayout {
                 if ((visibleItemCount > 0 && currentScrollState == RecyclerView.SCROLL_STATE_IDLE &&
                         (lastVisibleItemPosition) >= totalItemCount - 1)) {
                     //Log.d(TAG, "is loading more");
-                    if (listener != null) listener.onLoadingMore();
+                    if (listener != null) {
+                        mAttachView.hideAllView();
+                        listener.onLoadingMore();
+                    }
                 }
             }
 
