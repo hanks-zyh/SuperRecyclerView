@@ -183,7 +183,7 @@ public class SuperRecyclerView extends FrameLayout {
         mRecyclerView.setAdapter(adapter);
     }
 
-    public void hideRefresh() {
+    private void hideRefresh() {
         mRefreshView.setRefreshing(false);
     }
 
@@ -203,11 +203,12 @@ public class SuperRecyclerView extends FrameLayout {
         mAttachView.showErrorView();
     }
 
-    public void hideAttachView() {
+    private void hideAttachView() {
         mAttachView.hideAllView();
     }
 
     public void showRefresh() {
+        hideAttachView();
         mRefreshView.setRefreshing(true);
     }
 
@@ -218,21 +219,21 @@ public class SuperRecyclerView extends FrameLayout {
     }
 
     public void showLoadingMore() {
-        if(adapter instanceof  WrapperAdapter){
-            ((WrapperAdapter)adapter).displayLoadingRow(true);
+        hideAttachView();
+        if (adapter instanceof WrapperAdapter) {
+            ((WrapperAdapter) adapter).displayLoadingRow(true);
         }
     }
 
-    public void hideLoadingMore(){
-        if(adapter instanceof  WrapperAdapter){
-            ((WrapperAdapter)adapter).displayLoadingRow(false);
+    private void hideLoadingMore() {
+        if (adapter instanceof WrapperAdapter) {
+            ((WrapperAdapter) adapter).displayLoadingRow(false);
         }
     }
 
-    public void setCanLoadingMore(boolean canLoadingMore)
-    {
-        if(adapter instanceof  WrapperAdapter){
-            ((WrapperAdapter)adapter).displayLoadingRow(canLoadingMore);
+    public void setCanLoadingMore(boolean canLoadingMore) {
+        if (adapter instanceof WrapperAdapter) {
+            ((WrapperAdapter) adapter).displayLoadingRow(canLoadingMore);
         }
     }
 }

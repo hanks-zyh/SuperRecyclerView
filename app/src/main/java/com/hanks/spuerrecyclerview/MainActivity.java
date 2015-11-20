@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
-        superRecyclerView.hideRefresh();
+        superRecyclerView.hideAll();
         mAdapter.notifyDataSetChanged();
         if (dataList.size() <= 0) {
             int random = new Random().nextInt(100);
