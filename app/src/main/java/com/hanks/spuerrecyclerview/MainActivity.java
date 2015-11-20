@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,17 +35,54 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        superRecyclerView = (SuperRecyclerView) findViewById(R.id.super_recyclerview);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        String[] operator = {"refresh", "loading", "loadMore", "loadFinish", "emptyView", "errorView", "dragSort", "swipe_inbox", "swipe_qq", "group", "itemanimate"};
+        String[] operator = {"refresh", "loading", "loadingMore", "loadFinish", "emptyView", "errorView", "dragSort", "swipe_inbox", "swipe_qq", "group", "itemanimate","stop"};
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
-        spinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,operator));
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, operator);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                switch (position) {
+                    case 0:
+                        refresh();
+                        break;
+                    case 1:
+                        loading();
+                        break;
+                    case 2:
+                        loadingMore();
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
+                        hideAll();
+                        break;
+                    default:
+                        hideAll();
+                }
+            }
 
-        superRecyclerView = (SuperRecyclerView) findViewById(R.id.super_recyclerview);
+            @Override public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // wrapperAdapter for your adapter
         mAdapter = new WrapperAdapter(new MyAdapter(), LoadingListItemCreator.DEFAULT);
@@ -51,28 +90,48 @@ public class MainActivity extends AppCompatActivity {
 
         superRecyclerView.setListener(new SuperListener() {
             @Override public void onRefresh() {
-                new GetDataTask().execute(GetDataTask.TASK_TYPE_CLEAR);
+                showLog("onRefresh");
             }
 
             @Override public void onLoadingMore() {
-                new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
+                showLog("onLoadingMore");
             }
 
             @Override public void onReadLoad(View view) {
-                new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
+                showLog("onReLoad");
             }
         });
         new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
     }
 
+    private void loadingMore() {
+        superRecyclerView.showLoadingMore();
+    }
+
+    private void hideAll() {
+        superRecyclerView.hideAll();
+    }
+
+    private void showLog(String str) {
+        Log.d("SuperRecyclerView", str);
+    }
+
+    private void loading() {
+        superRecyclerView.showLoadingView();
+    }
+
+    private void refresh() {
+        superRecyclerView.showRefresh();
+    }
+
     private void updateUI() {
-        superRecyclerView.stopRefresh();
+        superRecyclerView.hideRefresh();
         mAdapter.notifyDataSetChanged();
         if (dataList.size() <= 0) {
             int random = new Random().nextInt(100);
             if (random > 50) {
                 superRecyclerView.showErrorView();
-            }else {
+            } else {
                 superRecyclerView.showEmptyView();
             }
         }
