@@ -6,7 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="?attr/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <Spinner
+            android:id="@+id/spinner_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </android.support.v7.widget.Toolbar>
+
     <com.hanks.library.SuperRecyclerView
+        android:layout_below="@id/toolbar"
         android:id="@+id/super_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

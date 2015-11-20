@@ -4,9 +4,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,16 @@ public class MainActivity extends AppCompatActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        String[] operator = {"refresh", "loading", "loadMore", "loadFinish", "emptyView", "errorView", "dragSort", "swipe_inbox", "swipe_qq", "group", "itemanimate"};
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_nav);
+        spinner.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,operator));
+
 
         superRecyclerView = (SuperRecyclerView) findViewById(R.id.super_recyclerview);
 
@@ -125,4 +138,5 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
 }
