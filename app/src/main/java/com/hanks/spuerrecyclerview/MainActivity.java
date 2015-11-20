@@ -62,8 +62,10 @@ public class MainActivity extends AppCompatActivity {
                     case 3:
                         break;
                     case 4:
+                        emptyView();
                         break;
                     case 5:
+                        errorView();
                         break;
                     case 6:
                         break;
@@ -102,6 +104,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         new GetDataTask().execute(GetDataTask.TASK_TYPE_ADD);
+    }
+
+    private void emptyView() {
+        superRecyclerView.showEmptyView();
+    }
+
+    private void errorView() {
+        superRecyclerView.showErrorView();
     }
 
     private void loadingMore() {

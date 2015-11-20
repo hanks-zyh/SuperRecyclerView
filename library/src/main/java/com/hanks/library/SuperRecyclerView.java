@@ -66,7 +66,6 @@ public class SuperRecyclerView extends FrameLayout {
     public SuperRecyclerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
-/*    */
 
     /**
      * 是否正在加载
