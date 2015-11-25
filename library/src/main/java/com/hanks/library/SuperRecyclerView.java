@@ -6,6 +6,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,10 +68,6 @@ public class SuperRecyclerView extends FrameLayout {
         this(context, attrs, 0);
     }
 
-    /**
-     * 是否正在加载
-     *//*
-    private boolean isLoadingMore = false;*/
     public SuperRecyclerView(Context context) {
         this(context, null);
     }
@@ -161,6 +158,30 @@ public class SuperRecyclerView extends FrameLayout {
                 }
             }
         });
+
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+            @Override public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            }
+
+            @Override public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+
+            @Override public boolean isLongPressDragEnabled() {
+                return true;
+            }
+
+            @Override public boolean isItemViewSwipeEnabled() {
+                return true;
+            }
+        };
+
+
     }
 
     private int findMax(int[] lastPositions) {
