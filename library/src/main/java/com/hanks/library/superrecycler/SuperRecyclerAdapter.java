@@ -1,6 +1,5 @@
 package com.hanks.library.superrecycler;
 
-import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -16,6 +15,9 @@ import com.hanks.library.helper.OnStartDragListener;
  */
 public class SuperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
 
+    /**
+     * 标识加载更多的 item 的 type
+     */
     private static final int ITEM_VIEW_TYPE_LOADING = Integer.MAX_VALUE - 50; // Magic
 
     private RecyclerView.Adapter   wrappedAdapter         = null;
@@ -29,9 +31,7 @@ public class SuperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.loadingListItemCreator = creator;
     }
 
-    public SuperRecyclerAdapter(Context context, OnStartDragListener dragStartListener) {
-        mDragStartListener = dragStartListener;
-    }
+
 
     @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ITEM_VIEW_TYPE_LOADING) {
@@ -107,5 +107,9 @@ public class SuperRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override public void onItemDismiss(int position) {
         notifyItemRemoved(position);
+    }
+
+    public void setOnStartDragListener(OnStartDragListener dragStartListener) {
+        mDragStartListener = dragStartListener;
     }
 }
