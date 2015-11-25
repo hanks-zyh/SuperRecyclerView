@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.hanks.library.helper.SimpleItemTouchHelperCallback;
 import com.hanks.library.pullrefresh.PullRefreshLayout;
+import com.hanks.library.superrecycler.SuperRecyclerAdapter;
 
 import java.util.List;
 /**
@@ -24,22 +26,20 @@ public class SuperRecyclerView extends FrameLayout {
     public static final int LAYOUT_MANAGER_GRID           = 0x12;
     public static final int LAYOUT_MANAGER_STAGGERED_GRID = 0x13;
 
-    /**
-     * layoutManager的类型（枚举）
-     */
     protected int layoutManagerType;
 
-    private PullRefreshLayout mRefreshView;
-    private RecyclerView      mRecyclerView;
+    private PullRefreshLayout    mRefreshView;
+    private RecyclerView         mRecyclerView;
+    private SuperRecyclerAdapter mAdapter;
 
     private AttachView mAttachView;
 
     private boolean canLoadingMore   = true;
     private boolean canRefresh       = true;
     private boolean canLoadingFinish = true;
-    private RecyclerView.Adapter adapter;
-    private List                 dataList;
-    private SuperListener        listener;
+
+    private List          dataList;
+    private SuperListener listener;
 
     /**
      * 最后一个的位置
@@ -159,29 +159,6 @@ public class SuperRecyclerView extends FrameLayout {
             }
         });
 
-        ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
-            @Override public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                return makeMovementFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-            }
-
-            @Override public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-
-            }
-
-            @Override public boolean isLongPressDragEnabled() {
-                return true;
-            }
-
-            @Override public boolean isItemViewSwipeEnabled() {
-                return true;
-            }
-        };
-
-
     }
 
     private int findMax(int[] lastPositions) {
@@ -194,14 +171,12 @@ public class SuperRecyclerView extends FrameLayout {
         return max;
     }
 
-    public void setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
+    public void setAdapter(SuperRecyclerAdapter adapter) {
+        this.mAdapter = adapter;
         mRecyclerView.setAdapter(adapter);
-    }
-
-    public void setAdapter(WrapperAdapter adapter) {
-        this.adapter = adapter;
-        mRecyclerView.setAdapter(adapter);
+        SimpleItemTouchHelperCallback simpleItemTouchHelperCallback = new SimpleItemTouchHelperCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchHelperCallback);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     private void hideRefresh() {
@@ -241,20 +216,20 @@ public class SuperRecyclerView extends FrameLayout {
 
     public void showLoadingMore() {
         hideAttachView();
-        if (adapter instanceof WrapperAdapter) {
-            ((WrapperAdapter) adapter).displayLoadingRow(true);
+        if (mAdapter instanceof SuperRecyclerAdapter) {
+            ((SuperRecyclerAdapter) mAdapter).displayLoadingRow(true);
         }
     }
 
     private void hideLoadingMore() {
-        if (adapter instanceof WrapperAdapter) {
-            ((WrapperAdapter) adapter).displayLoadingRow(false);
+        if (mAdapter instanceof SuperRecyclerAdapter) {
+            ((SuperRecyclerAdapter) mAdapter).displayLoadingRow(false);
         }
     }
 
     public void setCanLoadingMore(boolean canLoadingMore) {
-        if (adapter instanceof WrapperAdapter) {
-            ((WrapperAdapter) adapter).displayLoadingRow(canLoadingMore);
+        if (mAdapter instanceof SuperRecyclerAdapter) {
+            ((SuperRecyclerAdapter) mAdapter).displayLoadingRow(canLoadingMore);
         }
     }
 }

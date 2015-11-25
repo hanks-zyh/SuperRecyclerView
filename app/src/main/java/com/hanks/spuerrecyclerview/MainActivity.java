@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.hanks.library.LoadingListItemCreator;
 import com.hanks.library.SuperListener;
 import com.hanks.library.SuperRecyclerView;
-import com.hanks.library.WrapperAdapter;
+import com.hanks.library.superrecycler.SuperRecyclerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private SuperRecyclerView superRecyclerView;
 
     private List<String> dataList = new ArrayList<>();
-    private WrapperAdapter mAdapter;
+    private SuperRecyclerAdapter mAdapter;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // wrapperAdapter for your adapter
-        mAdapter = new WrapperAdapter(new MyAdapter(), LoadingListItemCreator.DEFAULT);
+        mAdapter = new SuperRecyclerAdapter(new MyAdapter(), LoadingListItemCreator.DEFAULT);
         superRecyclerView.setAdapter(mAdapter);
 
         superRecyclerView.setListener(new SuperListener() {
